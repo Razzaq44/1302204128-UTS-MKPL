@@ -32,9 +32,7 @@ public class TaxFunction {
             throw new IllegalArgumentException("More than 12 months working per year");
         }
 		
-		if (numberOfChildren > maxChild) {
-			numberOfChildren = maxChild;
-		}
+		numberOfChildren = Math.min(numberOfChildren, maxChild);
 		
 		if (isMarried) {
 			tax = (int) Math.round(taxRate * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking) - deductible - (thresholdNoTax + noTaxMaried + (numberOfChildren * noTaxEachChild))));
@@ -42,11 +40,7 @@ public class TaxFunction {
 			tax = (int) Math.round(taxRate * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking) - deductible - thresholdNoTax));
 		}
 		
-		if (tax < 0) {
-			return 0;
-		}else {
-			return tax;
-		}
+		return Math.max(tax, 0);
 			 
 	}
 	
