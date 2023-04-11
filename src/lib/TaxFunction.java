@@ -13,24 +13,33 @@ public class TaxFunction {
 	 * Jika pegawai sudah memiliki anak maka penghasilan tidak kena pajaknya ditambah sebesar Rp 4.500.000 per anak sampai anak ketiga.
 	 * 
 	 */
+
+	private static final double taxRate = 0.05;
+    private static final int maxChild = 3;
+    private static final int maxMonthWorking = 12;
+    private static final int thresholdNoTax = 54000000;
+	private static final int noTaxMaried = 4500000;
+    private static final int noTaxEachChild = 4500000;
+    
+	// Pembuatan variable baru digunakan untuk memudahkan readibility dan maintanability	
 	
 	
 	public static int calculateTax(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren) {
 		
 		int tax = 0;
 		
-		if (numberOfMonthWorking > 12) {
+		if (numberOfMonthWorking > maxMonthWorking) {
 			System.err.println("More than 12 month working per year");
 		}
 		
-		if (numberOfChildren > 3) {
-			numberOfChildren = 3;
+		if (numberOfChildren > maxChild) {
+			numberOfChildren = maxChild;
 		}
 		
 		if (isMarried) {
-			tax = (int) Math.round(0.05 * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking) - deductible - (54000000 + 4500000 + (numberOfChildren * 1500000))));
+			tax = (int) Math.round(taxRate * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking) - deductible - (thresholdNoTax + noTaxMaried + (numberOfChildren * noTaxEachChild))));
 		}else {
-			tax = (int) Math.round(0.05 * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking) - deductible - 54000000));
+			tax = (int) Math.round(taxRate * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking) - deductible - thresholdNoTax));
 		}
 		
 		if (tax < 0) {
